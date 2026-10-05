@@ -285,27 +285,14 @@ details>summary{outline:none}
 
   <div class="card">
     <h2>Fallos Simulables</h2>
+    <details open style="margin-bottom: 8px;">
+      <summary style="cursor:pointer;font-size:.85rem;color:var(--accent);font-weight:bold;margin-bottom:6px;">Fallos Mecánicos y Sensores</summary>
     <label><input type="checkbox" data-fault="oilBurn"> Consumo aceite / aros (clásico 1ZZ pre-2005)
       <small>1 qt / 500–1000 mi · plugs aceitosos · P0420 posible</small></label>
     <label><input type="checkbox" data-fault="vacLeak"> Fuga vacío / junta admisión
       <small>Foros: causa #1 de P0171 en Corolla/Matrix</small></label>
     <label><input type="checkbox" data-fault="injOring"> O-rings inyectores (silbido)
       <small>ToyotaNation: whistle + lean al rociar cerca</small></label>
-    <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0">
-      <strong style="font-size:.82rem;color:var(--accent)">Inyectores (1–4)</strong>
-      <small style="display:block;color:var(--muted);margin:4px 0 8px">Bloqueo = lean. Aspersión = misfire irregular.</small>
-      <div id="injPanel"></div>
-      <div class="row" style="margin-top:6px">
-        <button type="button" id="injAllBlock" style="font-size:.72rem">Todos bloqueo 60%</button>
-        <button type="button" id="injAllSpray" style="font-size:.72rem">Todos aspersión 60%</button>
-        <button type="button" id="injClear" style="font-size:.72rem">Limpiar inyectores</button>
-      </div>
-    </div>
-    <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0">
-      <strong style="font-size:.82rem;color:var(--accent)">Sensores / cableado</strong>
-      <small style="display:block;color:var(--muted);margin:4px 0 8px">MAF/TPS/MAP comparten ref 5V. CKP/CMP = pulso.</small>
-      <div id="wirePanel"></div>
-    </div>
     <label><input type="checkbox" data-fault="injAll"> Sucios globales (~50% bloqueo×4)</label>
     <label><input type="checkbox" data-fault="maf"> MAF sucio / defectuoso</label>
     <label><input type="checkbox" data-fault="o2"> O2 B1S1 lento / muerto</label>
@@ -321,7 +308,27 @@ details>summary{outline:none}
     <label><input type="checkbox" data-fault="alt"> Alternador débil</label>
     <label><input type="checkbox" data-fault="ac"> Compresor A/C carga extra</label>
     <label><input type="checkbox" data-fault="pcv"> PCV / manguera rota</label>
-    <h2 style="margin-top:10px">Escenarios de foro</h2>
+    </details>
+    <details style="margin-bottom: 8px;">
+      <summary style="cursor:pointer;font-size:.85rem;color:var(--accent);font-weight:bold;margin-bottom:6px;">Inyectores y Cableado (Avanzado)</summary>
+    <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0">
+      <strong style="font-size:.82rem;color:var(--accent)">Inyectores (1–4)</strong>
+      <small style="display:block;color:var(--muted);margin:4px 0 8px">Bloqueo = lean. Aspersión = misfire irregular.</small>
+      <div id="injPanel"></div>
+      <div class="row" style="margin-top:6px">
+        <button type="button" id="injAllBlock" style="font-size:.72rem">Todos bloqueo 60%</button>
+        <button type="button" id="injAllSpray" style="font-size:.72rem">Todos aspersión 60%</button>
+        <button type="button" id="injClear" style="font-size:.72rem">Limpiar inyectores</button>
+      </div>
+    </div>
+    <div style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:6px 0">
+      <strong style="font-size:.82rem;color:var(--accent)">Sensores / cableado</strong>
+      <small style="display:block;color:var(--muted);margin:4px 0 8px">MAF/TPS/MAP comparten ref 5V. CKP/CMP = pulso.</small>
+      <div id="wirePanel"></div>
+    </div>
+    </details>
+    <details style="margin-bottom: 8px;">
+      <summary style="cursor:pointer;font-size:.85rem;color:var(--accent);font-weight:bold;margin-bottom:6px;">Escenarios de foro</summary>
     <button type="button" class="scenario" data-sc="p0171">P0171 junta + trims +38</button>
     <button type="button" class="scenario" data-sc="oil">Oil burn + P0420</button>
     <button type="button" class="scenario" data-sc="misfire">Misfire + silbido iny.</button>
@@ -332,6 +339,7 @@ details>summary{outline:none}
     <button type="button" class="scenario" data-sc="o2Short">O2 corto a masa</button>
     <button type="button" class="scenario" data-sc="vrefGnd">Corto ref 5V</button>
     <button type="button" class="scenario" data-sc="ckpPulse">CKP sin pulso</button>
+    </details>
     <button type="button" id="btnClearFaults" style="width:100%;margin-top:8px">Limpiar fallos 3D</button>
   </div>
 </aside>
@@ -343,7 +351,6 @@ details>summary{outline:none}
     <button type="button" data-tab="parts">Piezas</button>
     <button type="button" data-tab="ff">Freeze-frame</button>
     <button type="button" data-tab="specs">Specs / FSM</button>
-    <button type="button" data-tab="quiz">Quiz</button>
   </div>
 
   <section class="card panel" id="tab-live" style="border:none;border-radius:0;margin:0">
@@ -497,14 +504,6 @@ details>summary{outline:none}
       <tr><td>STFT/LTFT</td><td>±10% ideal</td><td>&gt;+20 lean</td></tr>
       <tr><td>PID $0E</td><td>Avance ignición</td><td>Drive 3D spark</td></tr>
     </table>
-  </section>
-
-  <section class="card panel" id="tab-quiz" style="border:none;border-radius:0;margin:0">
-    <h2>Quiz diagnóstico</h2>
-    <p id="quizQ" class="sub">Pulsa «Nuevo caso».</p>
-    <div class="row" id="quizOpts"></div>
-    <p id="quizA"></p>
-    <button type="button" id="btnQuiz">Nuevo caso</button>
   </section>
 </main>
 </div>
@@ -2284,24 +2283,6 @@ document.getElementById('rpmSlider').addEventListener('input',()=>{
 });
 requestAnimationFrame(loop);
 
-const QUIZ=[
-{q:'LTFT +38%, vacío bajo (~45 kPa), silbido cerca de inyectores. ¿Más probable?',opts:['Bobina #2','O-rings inyectores / fuga vacío','Alternador','CKP'],a:1,why:'Foros P0171: junta admisión / O-rings / PCV. Vacío cae y trims se van a +.' },
-{q:'Matrix 2003: 1 qt aceite / 500–1000 mi, P0420, sin fuga en piso. ¿Causa raíz típica?',opts:['Bomba de agua','Aros low-tension (oil burn)','Sensor CKP','TPS'],a:1,why:'Folklore 1ZZ: consumo por aros; P0420 por cat ensuciado.'},
-{q:'Cascabeleo en frío a 140k km + P0011. ¿Qué mirar primero?',opts:['Solo bujías','Cadena/tensor/guías + aceite','Radiador','Alternador'],a:1,why:'Cadena estira 100–150k; correlación CKP/CMP → VVT codes.'},
-{q:'Misfire bajo carga; foros dicen “limpia esto primero”.',opts:['MAF','Compresor A/C','Termostato','Bobina de arranque'],a:0,why:'Consejo recurrente en ToyotaNation misfire threads: MAF.'},
-{q:'Compresión #2 = 0 psi dry y wet; aire por escape en leak-down.',opts:['Aros solamente','Válvula (a menudo quemada)','Solo MAF','Solo O2'],a:1,why:'Wet no sube + aire escape → válvula; aros solos suelen subir un poco en wet.'}
-];
-let qi=0;
-function showQuiz(){
-  qi=Math.floor(Math.random()*QUIZ.length);const Q=QUIZ[qi];
-  document.getElementById('quizQ').textContent=Q.q;
-  document.getElementById('quizA').textContent='';
-  const box=document.getElementById('quizOpts');box.innerHTML='';
-  Q.opts.forEach((o,i)=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{
-    document.getElementById('quizA').innerHTML=(i===Q.a?'<span class="ok">Correcto.</span> ':'<span class="bad">No.</span> ')+Q.why;
-  };box.appendChild(b);});
-}
-document.getElementById('btnQuiz').onclick=showQuiz;showQuiz();
 
 
 /* ═══════════ Three.js (carga dinámica) ═══════════ */
@@ -2359,10 +2340,10 @@ async function __bootThree() {
     labelRenderer.domElement.style.left = '0';
     labelRenderer.domElement.style.width = '100%';
     labelRenderer.domElement.style.height = '100%';
-    labelRenderer.domElement.style.pointerEvents = 'none';
+    // labelRenderer.domElement.style.pointerEvents = 'none'; // Removed so controls can receive events on it
     viewport.appendChild(labelRenderer.domElement);
 
-    controls = new OrbitControls(camera, renderer.domElement);
+    controls = new OrbitControls(camera, labelRenderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.07;
     controls.target.set(0, 1.1, 0);
@@ -2401,7 +2382,7 @@ scene.add(new THREE.HemisphereLight(0x9bb8d4, 0x1a1510, 0.55));
 const key = new THREE.DirectionalLight(0xfff4e8, 1.35);
 key.position.set(5, 9, 4);
 key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
+key.shadow.mapSize.set(512, 512);
 key.shadow.camera.near = 1; key.shadow.camera.far = 40;
 key.shadow.camera.left = -8; key.shadow.camera.right = 8;
 key.shadow.camera.top = 8; key.shadow.camera.bottom = -8;
@@ -3923,6 +3904,16 @@ function animate() {
   const _hm = document.getElementById('hudMap'); if (_hm) _hm.textContent = (state.map||0).toFixed(0) + ' kPa';
   const _hst = document.getElementById('hudStft'); if (_hst) _hst.textContent = (state.stft||0).toFixed(1) + '%';
   const _hlt = document.getElementById('hudLtft'); if (_hlt) _hlt.textContent = (state.ltft||0).toFixed(1) + '%';
+
+  // Blinking effect for highlighted parts
+  if (lastHl && lastHl.length > 0) {
+    const blink = 0.4 + 0.6 * Math.abs(Math.sin(elapsed * 4));
+    lastHl.forEach(m => {
+      if (m.material && m.material.emissiveIntensity !== undefined) {
+        m.material.emissiveIntensity = blink;
+      }
+    });
+  }
 
   controls.update();
   renderer.render(scene, camera);
