@@ -7,8 +7,8 @@
 <script type="importmap">
 {
   "imports": {
-    "three": "./vendor/three/three.module.js",
-    "three/addons/": "./vendor/three/addons/"
+    "three": "/vendor/three/three.module.js",
+    "three/addons/": "/vendor/three/addons/"
   }
 }
 </script>
@@ -2338,10 +2338,10 @@ async function __bootThree() {
     console.error('Three import failed', e);
     showWebglError(
       '<b>No se pudo cargar Three.js (Motor 3D).</b><br/>' +
-      'Causa frecuente: abrir el HTML con <code>file://</code> (el navegador bloquea módulos ES) o sin Internet/CDN.<br/><br/>' +
+      'Causa frecuente: abrir el HTML con <code>file://</code> (el navegador bloquea módulos ES) o problemas de caché en Render.<br/><br/>' +
       'Preferí servir la carpeta en local:<br/>' +
-      '<code>cd /workspace && python3 -m http.server 8080</code><br/>' +
-      'luego abrí <code>http://localhost:8080/1ZZ-FE_Matrix_Unificado.html</code>.<br/><br/>' +
+      '<code>python3 -m http.server 8080</code><br/>' +
+      'luego abrí <code>http://localhost:8080/</code>.<br/><br/>' +
       'También hay copia local en <code>./vendor/three/</code> (requiere http.server, no file://).<br/><br/>' +
       'Fallback: <a href="1ZZ-FE_Motor_3D_Real.html">abrir 1ZZ-FE_Motor_3D_Real.html</a><br/>' +
       '<span style="color:#8fa3bf">Detalle: ' + String(e && e.message || e).replace(/[<>&]/g, s => ({'<':'&lt;','>':'&gt;','&':'&amp;'}[s])) + '</span>'
