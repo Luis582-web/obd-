@@ -2355,12 +2355,11 @@ async function __bootThree() {
     scene.fog = new THREE.FogExp2(0x070a0f, 0.018);
 
     camera = new THREE.PerspectiveCamera(42, 1, 0.05, 200);
-    renderer = new THREE.WebGLRenderer({ antialias:true, powerPreference:'high-performance' });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer = new THREE.WebGLRenderer({ antialias:false, powerPreference:'high-performance' });
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25)); // Resolución más ligera
+    renderer.shadowMap.enabled = false; // Sin sombras para mejor rendimiento
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.0;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -2464,33 +2463,27 @@ const alumMap = makeAlumTex(256, false);
 const alumMapCover = makeAlumTex(256, false);
 
 function alum(hex=0xc8d0d8, rough=0.32, metal=0.92) {
-
-  return new THREE.MeshPhysicalMaterial({
-    color: hex, metalness: metal, roughness: rough,
-    clearcoat: 0.15, clearcoatRoughness: 0.4,
-    envMapIntensity: 1.0
+  return new THREE.MeshStandardMaterial({
+    color: hex, metalness: metal, roughness: rough
   });
 }
 const matBlock = alum(0xb8c2cc, 0.38, 0.88);
-matBlock.map = alumMap; matBlock.roughnessMap = alumMap; matBlock.bumpMap = alumMap; matBlock.bumpScale = 0.015;
 const matBlockRib = alum(0xa8b4c0, 0.45, 0.85);
 const matBore = new THREE.MeshStandardMaterial({ color:0x2a3038, metalness:0.7, roughness:0.35 });
 const matHead = alum(0xd0d8e0, 0.3, 0.9);
-const matCover = new THREE.MeshPhysicalMaterial({
-  color: 0xd8dee6, metalness: 0.85, roughness: 0.28,
-  clearcoat: 0.55, clearcoatRoughness: 0.22, envMapIntensity: 1.2
+const matCover = new THREE.MeshStandardMaterial({
+  color: 0xd8dee6, metalness: 0.85, roughness: 0.28
 }); // tapa aluminio plateada
 const matPan = alum(0x8a949e, 0.42, 0.8);
-const matIntake = new THREE.MeshPhysicalMaterial({
-  color: 0x1a1c1e, metalness: 0.05, roughness: 0.55,
-  clearcoat: 0.2, clearcoatRoughness: 0.6
+const matIntake = new THREE.MeshStandardMaterial({
+  color: 0x1a1c1e, metalness: 0.05, roughness: 0.55
 }); // plástico negro
-const matThrottle = new THREE.MeshPhysicalMaterial({ color:0x222628, metalness:0.15, roughness:0.5 });
+const matThrottle = new THREE.MeshStandardMaterial({ color:0x222628, metalness:0.15, roughness:0.5 });
 const matExhaust = new THREE.MeshStandardMaterial({ color:0x6b6358, metalness:0.75, roughness:0.35 });
 const matExhaustHot = new THREE.MeshStandardMaterial({ color:0x8a7060, metalness:0.7, roughness:0.4, emissive:0x331100, emissiveIntensity:0.08 });
-const matPiston = new THREE.MeshPhysicalMaterial({ color:0xe8ecf0, metalness:0.9, roughness:0.22, clearcoat:0.3 });
+const matPiston = new THREE.MeshStandardMaterial({ color:0xe8ecf0, metalness:0.9, roughness:0.22 });
 const matCrank = new THREE.MeshStandardMaterial({ color:0x3a3f48, metalness:0.9, roughness:0.25 });
-const matCoilBody = new THREE.MeshPhysicalMaterial({ color:0x0e1116, metalness:0.25, roughness:0.45 });
+const matCoilBody = new THREE.MeshStandardMaterial({ color:0x0e1116, metalness:0.25, roughness:0.45 });
 const matCoilBoot = new THREE.MeshStandardMaterial({ color:0x1a1a1a, metalness:0.05, roughness:0.85 });
 const matInj = new THREE.MeshStandardMaterial({ color:0x2c3540, metalness:0.55, roughness:0.35 });
 const matRail = alum(0xc0c8d0, 0.3, 0.9);
@@ -2502,9 +2495,9 @@ const matValve = new THREE.MeshStandardMaterial({ color:0xd4af37, metalness:0.8,
 const matBelt = new THREE.MeshStandardMaterial({ color:0x0a0a0a, metalness:0.05, roughness:0.75 });
 const matFault = new THREE.MeshStandardMaterial({ color:0xf85149, emissive:0xf85149, emissiveIntensity:0.6, metalness:0.3, roughness:0.4 });
 const matCutSolid = matBlock.clone();
-const matCutGlass = new THREE.MeshPhysicalMaterial({
+const matCutGlass = new THREE.MeshStandardMaterial({
   color: 0xa8c4d8, metalness: 0.1, roughness: 0.15,
-  transmission: 0.55, thickness: 0.6, transparent: true, opacity: 0.35,
+  transparent: true, opacity: 0.25,
   side: THREE.DoubleSide, depthWrite: false
 });
 
