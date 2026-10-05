@@ -2495,9 +2495,9 @@ const matValve = new THREE.MeshStandardMaterial({ color:0xd4af37, metalness:0.8,
 const matBelt = new THREE.MeshStandardMaterial({ color:0x0a0a0a, metalness:0.05, roughness:0.75 });
 const matFault = new THREE.MeshStandardMaterial({ color:0xf85149, emissive:0xf85149, emissiveIntensity:0.6, metalness:0.3, roughness:0.4 });
 const matCutSolid = matBlock.clone();
-const matCutGlass = new THREE.MeshStandardMaterial({
+const matCutGlass = new THREE.MeshPhysicalMaterial({
   color: 0xa8c4d8, metalness: 0.1, roughness: 0.15,
-  transparent: true, opacity: 0.25,
+  transmission: 0.55, thickness: 0.6, transparent: true, opacity: 0.5,
   side: THREE.DoubleSide, depthWrite: false
 });
 
@@ -3946,9 +3946,9 @@ function animate() {
 }
 
 applyFaultVisuals();
-applyCutaway(true);
+applyCutaway(false);
 const _cutEl = document.getElementById('togCutaway');
-if (_cutEl) _cutEl.checked = true;
+if (_cutEl) _cutEl.checked = false;
 syncFaultsFromDemoUI();
 animate();
 
