@@ -284,7 +284,7 @@ details>summary{outline:none}
   </div>
 
   <div class="card">
-    <h2>Fallos (taller + foros)</h2>
+    <h2>Fallos Simulables</h2>
     <label><input type="checkbox" data-fault="oilBurn"> Consumo aceite / aros (clásico 1ZZ pre-2005)
       <small>1 qt / 500–1000 mi · plugs aceitosos · P0420 posible</small></label>
     <label><input type="checkbox" data-fault="vacLeak"> Fuga vacío / junta admisión
@@ -343,7 +343,6 @@ details>summary{outline:none}
     <button type="button" data-tab="parts">Piezas</button>
     <button type="button" data-tab="ff">Freeze-frame</button>
     <button type="button" data-tab="specs">Specs / FSM</button>
-    <button type="button" data-tab="forums">Foros</button>
     <button type="button" data-tab="quiz">Quiz</button>
   </div>
 
@@ -498,18 +497,6 @@ details>summary{outline:none}
       <tr><td>STFT/LTFT</td><td>±10% ideal</td><td>&gt;+20 lean</td></tr>
       <tr><td>PID $0E</td><td>Avance ignición</td><td>Drive 3D spark</td></tr>
     </table>
-  </section>
-
-  <section class="card panel" id="tab-forums" style="border:none;border-radius:0;margin:0">
-    <h2>Foros / TSB (resumen)</h2>
-    <div class="forum"><strong>Oil burn 1ZZ:</strong> aros low-tension; P0420 por cat ensuciado.
-      <div class="src">toyota-club · ToyotaNation</div></div>
-    <div class="forum"><strong>P0171:</strong> junta admisión, PCV, O-rings iny.
-      <div class="src">ToyotaNation</div></div>
-    <div class="forum"><strong>ISO 9141 vs CAN:</strong> Matrix 03–08 K-line. ELM solo-CAN = fracaso. STN1110/ELM con ISO 9141.
-      <div class="src">Heavy/Grok · práctica OBD</div></div>
-    <div class="forum"><strong>Misfire:</strong> MAF primero; COP; vacío; cadena post-rebuild. P030x marca cilindro en 3D.
-      <div class="src">ToyotaNation</div></div>
   </section>
 
   <section class="card panel" id="tab-quiz" style="border:none;border-radius:0;margin:0">
@@ -2646,35 +2633,28 @@ function addBolt(parent, x, y, z, s = 0.05) {
 /* --- Valve cover (silver aluminum) with bolts --- */
 {
   const coverG = new THREE.Group();
-  // Main cover body (wider, covering timing chain on +X side)
-  const cover = shadow(new THREE.Mesh(new THREE.BoxGeometry(4.65, 0.32, 1.65), matCover));
-  cover.position.set(0.15, 2.88, 0); // shifted right (+X) for timing cover
+  // Domed-ish cover: main + raised center
+  const cover = shadow(new THREE.Mesh(new THREE.BoxGeometry(4.15, 0.28, 1.55), matCover));
+  cover.position.set(0, 2.88, 0);
   coverG.add(cover);
-  // Central raised section
-  const ridge = shadow(new THREE.Mesh(new THREE.BoxGeometry(4.1, 0.12, 0.95), matCover));
-  ridge.position.set(0.1, 3.1, 0);
+  const ridge = shadow(new THREE.Mesh(new THREE.BoxGeometry(3.9, 0.12, 0.9), matCover));
+  ridge.position.set(0, 3.08, 0);
   coverG.add(ridge);
-  // Timing chain bulge (+X side)
-  const timingBulge = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 0.32, 16), matCover));
-  timingBulge.rotation.x = Math.PI/2;
-  timingBulge.position.set(2.4, 2.88, 0);
-  coverG.add(timingBulge);
   // Oil filler
-  const filler = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.16, 0.12, 16), matCover));
-  filler.position.set(-1.6, 3.2, 0.45);
+  const filler = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.1, 16), matCover));
+  filler.position.set(-1.6, 3.18, 0.35);
   coverG.add(filler);
-  const cap = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.08, 16), matRubber));
-  cap.position.set(-1.6, 3.3, 0.45);
+  const cap = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.06, 16), matRubber));
+  cap.position.set(-1.6, 3.26, 0.35);
   coverG.add(cap);
   // Perimeter bolts
   for (let i = 0; i < 4; i++) {
-    addBolt(coverG, cylX(i), 3.05, 0.76, 0.04);
-    addBolt(coverG, cylX(i), 3.05, -0.76, 0.04);
+    addBolt(coverG, cylX(i), 3.05, 0.72, 0.04);
+    addBolt(coverG, cylX(i), 3.05, -0.72, 0.04);
   }
   engine.add(coverG);
-  parts.cover = coverG;
-  parts.valvecover = coverG; // for parts catalog mapping
-  cover.add(makeLabel('Tapa válvulas Al', 0.45));
+  parts.cover = cover;
+  cover.add(makeLabel('Tapa válvulas Al', 0.4));
 }
 
 /* --- COP coils in a row on cover --- */
@@ -2708,45 +2688,49 @@ const plugTips = []; // electrode tip positions (local engine)
 /* --- Black plastic intake manifold ON TOP / forward --- */
 {
   const intakeG = new THREE.Group();
-  // Plenum (black plastic) - positioned slightly lower and forward
-  const plenum = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 3.8, 20), matIntake));
-  plenum.rotation.z = Math.PI / 2;
-  plenum.position.set(0, 1.9, 2.2);
+  // Plenum (black plastic) sitting atop / front of head
+  const plenum = shadow(new THREE.Mesh(new THREE.BoxGeometry(3.9, 0.55, 0.95), matIntake));
+  plenum.position.set(0, 2.55, 1.35);
   intakeG.add(plenum);
-  
-  // Curved runners (thick tubes curving up from ports, over, and down to plenum)
+  // Rounded plenum ends
+  for (let sx of [-1, 1]) {
+    const end = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 0.95, 16), matIntake));
+    end.rotation.x = Math.PI / 2;
+    end.position.set(sx * 1.95, 2.55, 1.35);
+    intakeG.add(end);
+  }
+  // Curved runners → ports (TubeGeometry)
   for (let i = 0; i < 4; i++) {
     const pts = [
-      new THREE.Vector3(cylX(i), 2.35, 0.35), // port at head
-      new THREE.Vector3(cylX(i), 2.65, 0.9),  // curve up and out
-      new THREE.Vector3(cylX(i), 2.7, 1.5),   // apex
-      new THREE.Vector3(cylX(i), 2.15, 2.1)   // into plenum
+      new THREE.Vector3(cylX(i), 2.55, 1.0),
+      new THREE.Vector3(cylX(i), 2.45, 0.65),
+      new THREE.Vector3(cylX(i), 2.35, 0.35)
     ];
     const curve = new THREE.CatmullRomCurve3(pts);
-    const tube = shadow(new THREE.Mesh(new THREE.TubeGeometry(curve, 16, 0.18, 12, false), matIntake));
+    const tube = shadow(new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.11, 10, false), matIntake));
     intakeG.add(tube);
   }
-  // Throttle body (driver's side, -X in this model geometry since timing is +X)
-  const tb = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.5, 20), matThrottle));
+  // Throttle body
+  const tb = shadow(new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.3, 0.45, 20), matThrottle));
   tb.rotation.z = Math.PI / 2;
-  tb.position.set(-2.1, 1.9, 2.2);
+  tb.position.set(2.35, 2.55, 1.35);
   intakeG.add(tb);
-  
-  // Air duct hose angling up and out
+  const tbFlange = shadow(new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.55, 0.55), matThrottle));
+  tbFlange.position.set(2.1, 2.55, 1.35);
+  intakeG.add(tbFlange);
+  // Air duct hose
   const hosePts = [
-    new THREE.Vector3(-2.35, 1.9, 2.2),
-    new THREE.Vector3(-2.8, 2.1, 2.4),
-    new THREE.Vector3(-3.4, 2.4, 2.5)
+    new THREE.Vector3(2.6, 2.55, 1.35),
+    new THREE.Vector3(3.2, 2.7, 1.35),
+    new THREE.Vector3(3.7, 2.55, 1.5)
   ];
-  const hose = shadow(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hosePts), 16, 0.25, 12, false), matRubber));
+  const hose = shadow(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(hosePts), 16, 0.16, 12, false), matRubber));
   intakeG.add(hose);
 
   engine.add(intakeG);
   parts.intake = intakeG;
-  parts.throttle = tb;
   parts.plenum = plenum;
-  parts.airfilter = hose; // mapped roughly for catalog
-  plenum.add(makeLabel('Múltiple adm. (plástico)', 0.55));
+  plenum.add(makeLabel('Múltiple adm. (plástico)', 0.45));
 }
 
 /* --- Exhaust manifold curved pipes (-Z) --- */
@@ -3081,25 +3065,18 @@ function addSensor(name, pos, mat = matSensor, size = [0.2, 0.2, 0.28]) {
   g.userData.body = m;
   return g;
 }
-const maf = addSensor('MAF', new THREE.Vector3(-3.4, 2.4, 2.5), matSensor, [0.38, 0.32, 0.42]);
+const maf = addSensor('MAF', new THREE.Vector3(3.75, 2.55, 1.5), matSensor, [0.38, 0.32, 0.42]);
 parts.maf = maf;
-const tps = addSensor('TPS', new THREE.Vector3(-2.1, 1.9, 2.5), matSensor, [0.2, 0.18, 0.22]);
+const tps = addSensor('TPS', new THREE.Vector3(2.35, 2.25, 1.7), matSensor, [0.2, 0.18, 0.22]);
 parts.tps = tps;
 const ocv = addSensor('OCV', new THREE.Vector3(2.15, 2.95, 0.35),
   new THREE.MeshStandardMaterial({ color: 0x22c55e, metalness: 0.3, roughness: 0.45 }), [0.26, 0.22, 0.22]);
 parts.ocv = ocv;
-const ckp = addSensor('CKP', new THREE.Vector3(2.2, CRANK_Y + 0.3, 0.35), matSensor, [0.24, 0.18, 0.24]);
+const ckp = addSensor('CKP', new THREE.Vector3(-2.1, CRANK_Y - 0.05, 0.75), matSensor, [0.24, 0.18, 0.24]);
 parts.ckp = ckp;
-const cmp = addSensor('CMP', new THREE.Vector3(-2.15, 2.72, 0.35), matSensor, [0.2, 0.2, 0.25]); // en extremo opuesto
-parts.cmp = cmp;
-const knock = addSensor('Knock', new THREE.Vector3(0, 1.5, 0.8), matSensor, [0.15, 0.15, 0.15]);
-parts.knock = knock;
 const o2 = addSensor('O2', new THREE.Vector3(-1.7, 0.4, -2.55),
   new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.4, roughness: 0.4 }), [0.14, 0.28, 0.14]);
 parts.o2 = o2;
-parts.o2up = o2; // para catalog
-parts.o2dn = o2; // aproximado, usar el mismo para cat
-parts.cat = parts.exhaust;
 
 /* --- ECU --- */
 {
@@ -3107,11 +3084,18 @@ parts.cat = parts.exhaust;
   ecu.position.set(-3.9, 0.95, 1.4);
   engine.add(ecu);
   ecu.add(makeLabel('ECU', 0.65));
-  parts.ecm = ecu; // name matching catalog
+  parts.ecu = ecu;
   const conn = shadow(new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.45, 0.18), matSensor));
   conn.position.set(-3.35, 0.95, 1.4);
   engine.add(conn);
 }
+
+// Aliases para el catálogo
+parts.valvecover = parts.cover;
+parts.cat = parts.exhaust;
+parts.o2up = parts.o2;
+parts.o2dn = parts.o2;
+parts.ecm = parts.ecu;
 
 /* ═══════════ Process FX — THREE DISTINCT MEDIA ═══════════
  * ELECTRICAL: arcs / lightning bolts (Lines + PointLight) — spark & data
@@ -4399,3 +4383,6 @@ setTimeout(runSimulatedTests, 2500);
 </script>
 </body>
 </html>
+
+
+
